@@ -6,19 +6,70 @@
     <title>مرحباً</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        body{background:black;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}
-        h1{color:white;font-size:80px}
-        .btn{position:fixed;top:20px;left:20px;background:#2196F3;color:white;padding:8px 15px;border-radius:20px;cursor:pointer;font-size:14px}
+        body {
+            background-image: url('pexels-artempodrez-7648368 (1).jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: white;
+            font-size: 80px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+        .install-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #000000;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            border: none;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-<h1>مرحباً</h1>
-<div class="btn" id="btn">📱 تنزيل</div>
-<script>
-if('serviceWorker'in navigator)navigator.serviceWorker.register('service-worker.js');
-let dp;const btn=document.getElementById('btn');
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;});
-btn.onclick=()=>{if(dp){dp.prompt();}};
-</script>
+    <h1>مرحباً</h1>
+    <button class="install-btn" id="installBtn">📱 تثبيت التطبيق</button>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js');
+        }
+
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(() => {
+                    installBtn.style.display = 'none';
+                });
+            }
+        });
+
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            installBtn.style.display = 'none';
+        }
+    </script>
 </body>
 </html>
