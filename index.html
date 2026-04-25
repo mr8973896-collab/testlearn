@@ -2,73 +2,265 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>مرحباً</title>
     <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
+
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-image: url('pexels-artempodrez-7648368 (1).jpg');
+            background-image: url('bg.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            margin: 0;
-            padding: 0;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
+            position: relative;
         }
-        h1 {
-            color: white;
-            font-size: 80px;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+
+        /* الدوك الشفاف الرفيع */
+        .dock {
+            position: fixed;
+            bottom: 25px;
+            left: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 30px;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+            z-index: 100;
         }
+
+        /* كل ايقونة */
+        .dock-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            padding: 8px 0;
+            border-radius: 30px;
+            flex: 1;
+        }
+
+        .dock-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .dock-item:active {
+            transform: scale(0.94);
+        }
+
+        /* شكل الدائرة الخلفية */
+        .icon-circle {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .dock-item:hover .icon-circle {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.05);
+        }
+
+        /* SVG icons */
+        .icon-svg {
+            width: 24px;
+            height: 24px;
+            stroke: white;
+            stroke-width: 1.7;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* زر التنزيل الراقي */
         .install-btn {
             position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #000000;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 50px;
+            top: 20px;
+            left: 20px;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            font-size: 18px;
             border: none;
-            font-weight: bold;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            transition: all 0.25s ease;
+            z-index: 100;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .install-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .install-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* ايقونة زر التنزيل SVG */
+        .download-icon {
+            width: 16px;
+            height: 16px;
+            stroke: white;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        @media (max-width: 500px) {
+            .icon-circle {
+                width: 44px;
+                height: 44px;
+            }
+            .icon-svg {
+                width: 22px;
+                height: 22px;
+            }
+            .dock {
+                padding: 8px 16px;
+                bottom: 18px;
+                left: 15px;
+                right: 15px;
+            }
+            .install-btn {
+                padding: 8px 18px;
+                font-size: 13px;
+                top: 15px;
+                left: 15px;
+            }
         }
     </style>
 </head>
+
 <body>
-    <h1>مرحباً</h1>
-    <button class="install-btn" id="installBtn">📱 تثبيت التطبيق</button>
+    <!-- زر التنزيل -->
+    <button class="install-btn" id="installBtn">
+        <svg class="download-icon" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+            <path d="M12 3v12m-4-4 4 4 4-4" />
+        </svg>
+        تثبيت التطبيق
+    </button>
+
+    <!-- الدوك الشفاف الرفيع بدون كلمات -->
+    <div class="dock">
+        <!-- ملف شخصي (كان الرئيسية) -->
+        <div class="dock-item" id="profileBtn">
+            <div class="icon-circle">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- إشعارات (كان مراسلات) -->
+        <div class="dock-item" id="notificationsBtn">
+            <div class="icon-circle">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- مراسلات (كان إشعارات) -->
+        <div class="dock-item" id="messagesBtn">
+            <div class="icon-circle">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- رئيسية (كان ملف شخصي) -->
+        <div class="dock-item" id="homeBtn">
+            <div class="icon-circle">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-5v-8H9v8H4a2 2 0 0 1-2-2z" />
+                </svg>
+            </div>
+        </div>
+    </div>
 
     <script>
+        let deferredPrompt;
+        const btn = document.getElementById('installBtn');
+
+        // تسجيل Service Worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js');
         }
 
-        let deferredPrompt;
-        const installBtn = document.getElementById('installBtn');
-
+        // انتظار حدث التثبيت من المتصفح
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            installBtn.style.display = 'block';
+            btn.style.display = 'flex';
         });
 
-        installBtn.addEventListener('click', () => {
+        // زر التثبيت
+        btn.addEventListener('click', () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                deferredPrompt.userChoice.then(() => {
-                    installBtn.style.display = 'none';
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        btn.style.display = 'none';
+                    }
+                    deferredPrompt = null;
                 });
             }
         });
 
+        // ايقونات الدوك حسب الترتيب الجديد
+        document.getElementById('profileBtn').addEventListener('click', () => {
+            alert('👤 الملف الشخصي');
+        });
+
+        document.getElementById('notificationsBtn').addEventListener('click', () => {
+            alert('🔔 الإشعارات');
+        });
+
+        document.getElementById('messagesBtn').addEventListener('click', () => {
+            alert('💬 المراسلات');
+        });
+
+        document.getElementById('homeBtn').addEventListener('click', () => {
+            alert('🏠 الرئيسية');
+        });
+
+        // لو التطبيق مثبت بالفعل
         if (window.matchMedia('(display-mode: standalone)').matches) {
-            installBtn.style.display = 'none';
+            btn.style.display = 'none';
         }
     </script>
 </body>
