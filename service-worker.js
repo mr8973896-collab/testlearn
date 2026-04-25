@@ -1,10 +1,39 @@
-const CACHE_NAME = 'app-cache-v1';
-const urls = ['./', './index.html', './manifest.json', './pexels-artempodrez-7648368 (1).jpg'];
+const CACHE_NAME = 'app-cache-v4';
 
+const urls = [
+    './',
+    './index.html',
+    './manifest.json',
+    './bg.jpg'
+];
+
+// install
 self.addEventListener('install', event => {
-    event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(urls)));
+    self.skipWaiting();
+    event.waitUntil(
+        caches.open(CACHE_NAME).then(cache => cache.addAll(urls))
+    );
 });
 
+// activate
+self.addEventListener('activate', event => {
+    event.waitUntil(
+        caches.keys().then(keys =>
+            Promise.all(
+                keys.map(key => {
+                    if (key !== CACHE_NAME) {
+                        return caches.delete(key);
+                    }
+                })
+            )
+        )
+    );
+    self.clients.claim();
+});
+
+// fetch
 self.addEventListener('fetch', event => {
-    event.respondWith(caches.match(event.request).then(response => response || fetch(event.request)));
+    event.respondWith(
+        fetch(event.request).catch(() => caches.match(event.request))
+    );
 });
